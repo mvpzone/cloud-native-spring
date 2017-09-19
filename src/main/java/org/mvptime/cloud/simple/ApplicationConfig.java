@@ -21,14 +21,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @ServiceScan
 @CloudScan
-public class EnvConfig extends AbstractCloudConfig {
-	private static final Logger LOG = LoggerFactory.getLogger(EnvConfig.class);
+public class ApplicationConfig extends AbstractCloudConfig {
+	private static final Logger LOG = LoggerFactory.getLogger(ApplicationConfig.class);
 
 	@Value("${VCAP_APPLICATION:{}}")
 	private String application;
 
 	@Value("${VCAP_SERVICES:{}}")
 	private String services;
+
+	@Value("${greeting:Hola}")
+	private String _greeting;
 
 	@Autowired
 	private ObjectMapper json;
@@ -44,6 +47,10 @@ public class EnvConfig extends AbstractCloudConfig {
 
 	public String getServices() {
 		return this.services;
+	}
+
+	public String getGreeting() {
+		return this._greeting;
 	}
 
 	@SuppressWarnings("unchecked")

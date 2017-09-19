@@ -17,16 +17,16 @@ public class EnvController {
 	private static final Logger LOG = LoggerFactory.getLogger(EnvController.class);
 
 	@Autowired
-	private EnvConfig envConfig;
+	private ApplicationConfig appConfig;
 
 	@RequestMapping(value = { "/" }, produces = { "text/html" })
 	public String index(Model model) {
 		try {
-			final ApplicationInstanceInfo appInfo = envConfig.cloud().getApplicationInstanceInfo();
+			final ApplicationInstanceInfo appInfo = appConfig.cloud().getApplicationInstanceInfo();
 			LOG.info("App properties : {}", appInfo);
 			model.addAttribute("cfapp", appInfo.getProperties());
 
-			final Map<String, List<Object>> cfservices = envConfig.getServiceProps();
+			final Map<String, List<Object>> cfservices = appConfig.getServiceProps();
 			LOG.info("Service Props : {}", cfservices);
 			model.addAttribute("cfservices", cfservices);
 
