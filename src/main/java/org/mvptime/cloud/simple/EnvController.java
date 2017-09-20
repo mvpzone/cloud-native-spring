@@ -1,5 +1,8 @@
 package org.mvptime.cloud.simple;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +14,7 @@ import org.springframework.cloud.app.ApplicationInstanceInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class EnvController {
@@ -40,5 +44,26 @@ public class EnvController {
 			model.addAttribute("cfservice", new LinkedHashMap<>());
 		}
 		return "index";
+	}
+
+	@RequestMapping(value = "/environment", method = RequestMethod.GET)
+	public String env(Model model) throws Exception {
+		final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd'T'hh:mm:ss.S Z");
+		final String serverTime = dateFormat.format(new Date());
+		model.addAttribute("serverTime", serverTime);
+		model.addAttribute("extIpPort", appConfig.getIPPort());
+
+		final int port = appConfig.getPort();
+		model.addAttribute("port", port);
+
+		final Map<String, Object> vcapMap = appConfig.getVCAPAppMap();
+		model.addAttribute("vcapApplication", vcapMap);
+		model.addAttribute("vcapAppInfo", appConfig.getApplication());
+		model.addAttribute("vcapServices", appConfig.getServices());
+		model.addAttribute("serviceInfos", appConfig.getCFServices());
+
+		LOG.info("Current date and time = [{}], port = [{}].", serverTime, port);
+
+		return "environment";
 	}
 }
