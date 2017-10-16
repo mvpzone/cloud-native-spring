@@ -18,7 +18,7 @@ public class APIController {
 	@Autowired
 	private ApplicationConfig appConfig;
 
-	@RequestMapping("/hello")
+	@RequestMapping({ "/hello", "/info/hello" })
 	public String hello() {
 		final ObjectMapper mapper = appConfig.mapper();
 		final ObjectNode jsonObj = mapper.createObjectNode().put("greeting", appConfig.getGreeting() + " World!");

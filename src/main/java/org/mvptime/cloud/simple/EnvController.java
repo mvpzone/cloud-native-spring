@@ -23,7 +23,7 @@ public class EnvController {
 	@Autowired
 	private ApplicationConfig appConfig;
 
-	@RequestMapping(value = { "/" }, produces = { "text/html" })
+	@RequestMapping(value = { "/", "/info" }, produces = { "text/html" })
 	public String index(Model model) {
 		try {
 			final ApplicationInstanceInfo appInfo = appConfig.cloud().getApplicationInstanceInfo();
@@ -46,7 +46,7 @@ public class EnvController {
 		return "index";
 	}
 
-	@RequestMapping(value = "/environment", method = RequestMethod.GET)
+	@RequestMapping(value = { "/environment", "/info/environment" }, method = RequestMethod.GET)
 	public String env(Model model) throws Exception {
 		final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd'T'hh:mm:ss.S Z");
 		final String serverTime = dateFormat.format(new Date());
